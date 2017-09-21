@@ -24,7 +24,7 @@
         <div class="nav-wrap">
             <ul class="nav container group">
                 <li class="menu-item">
-                    <a href="/wrx/time.php" rel="nofollow" target="_blank">当前时间</a>
+                    <a href="/Function/time.php" rel="nofollow" target="_blank">当前时间</a>
                 </li>
             </ul>
         </div>
