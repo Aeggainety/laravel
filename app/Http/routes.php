@@ -32,7 +32,13 @@
 Route::get('/', 'ArticleController@index');
 
 //通过路由访问控制器中的方法
-Route::get('articles/{id}', 'ArticleController@show');
+Route::get('article/{id}', 'ArticleController@show');
+
+//访问form页面
+Route::get('articles/create', 'ArticleController@create');
+
+//访问store
+Route::post('articles/store', 'ArticleController@store');
 
 /*
 |--------------------------------------------------------------------------

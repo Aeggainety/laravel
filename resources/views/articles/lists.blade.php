@@ -27,25 +27,27 @@
 <!-- 模板中的unless判断 end-->
 <br>
 <!-- 模板中的foreach begin-->
-数组
+循环数组
 
 <div class='table-a'>
 <table width="400" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td>序号</td>
 		<td>标题</td>
-		<!-- <td>简介</td>
-		<td>内容</td> -->
+		<td>简介</td>
+		<!-- <td>内容</td> -->
 	</tr>
 	@foreach($articles as $v)
 	<tr>
 		<td><a href="{{action('ArticleController@show',[$v->id])}}">{{$v->id}}</a></td>
 		<td><a href="{{action('ArticleController@show',[$v->id])}}">{{$v->title}}</a></td>
-		<!-- <td>{{$v->intro}}</td>
-		<td>{{$v->content}}</td> -->
+		<td><a href="{{action('ArticleController@show',[$v->id])}}">{{$v->intro}}</a></td>
+		<!-- <td>{{$v->content}}</td> -->
 	</tr>
 	@endforeach
 </table>
+<br>
+<a href="{{action('ArticleController@create')}}">添加新文章</a>
 </div>
 
 	

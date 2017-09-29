@@ -44,12 +44,15 @@ class ArticleController extends Controller
 		$arr = array(1,2,3,4);
 
 		$article = new \App\Article();
-		$articles = $article->all();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
+		// $articles = $article->orderBy('id','ASC')->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
+		$articles = $article->latest()->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
 		// $articles = $article->all()->toArray();
 		$article->where('id','=','2')->update(['content'=>'文章']);
 		$article->title = '二';
 		$article->intro = '二';
 		$article->content = '二';
+		// 时间字段类型timestamp自动生成时间
+		
 		// $article->save();
 		// $article->find(id)->delete();
 		
@@ -72,19 +75,36 @@ class ArticleController extends Controller
 	}
 	
 	
-
-
 	/**
 	*
 	*Show the form for creating a new resource
 	*
-	*@param	int	$id
 	*
-	*@return Response
+	*@return 
 	*/
-	public function edit($id)
+	public function create()
 	{
+		return view('articles.create');
+	}
 
+
+	//接受提交信息页面
+	public function store()
+	{
+		$article = new \App\Article();
+		$input = $_POST;
+		// var_dump($input);
+		/* 必填
+		*  标题
+		*  简介
+		*  内容
+		*/
+		$article->title = $input['title'];
+		$article->intro = $input['intro'];
+		$article->content = $input['content'];
+		$article->save();
+
+		return redirect('/');
 	}
 
 
