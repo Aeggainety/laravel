@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\Eloquent\Model;
 use app\Article;
+use Carbon\Carbon;
 header("Content-Type:text/html;charset=utf-8");
 class ArticleController extends Controller
 {
@@ -45,7 +46,9 @@ class ArticleController extends Controller
 
 		$article = new \App\Article();
 		// $articles = $article->orderBy('id','ASC')->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
-		$articles = $article->latest()->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
+		// $articles = $article->latest()->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
+		$articles = $article->where('publish_at','<=',Carbon::now())->latest()->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
+		// $articles = $article->latest()->published()->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
 		// $articles = $article->all()->toArray();
 		$article->where('id','=','2')->update(['content'=>'文章']);
 		$article->title = '二';
@@ -88,24 +91,61 @@ class ArticleController extends Controller
 	}
 
 
-	//接受提交信息页面
+	//接受/处理提交信息页面
 	public function store()
 	{
+
 		$article = new \App\Article();
-		$input = $_POST;
-		// var_dump($input);
-		/* 必填
+		
+		// var_dump($_POST);
+		/* 必填  将表单信息提交到数据库
 		*  标题
 		*  简介
 		*  内容
+		*  发布时间
 		*/
-		$article->title = $input['title'];
-		$article->intro = $input['intro'];
-		$article->content = $input['content'];
-		$article->save();
+		$article->title = $_POST['title'];
+		$article->intro = $_POST['intro'];
+		$article->content = $_POST['content'];
+		$article->publish_at = $this->setPublishedAtAttribute($_POST['publish_at']);//数据库字段类型timestamp
 
+		// $timeObj = $this->setPublishedAtAttribute($_POST['publish_at']);
+		// $timearray = $this->object2array($timeObj);
+		// var_dump($timeObj);echo '<hr>';
+		// var_dump($timearray);
+		// $article->publish_at = $timearray['date'];
+		
+		// exit;
+		$article->save();
+		
 		return redirect('/');
 	}
+
+	//时间设置
+	public function setPublishedAtAttribute($date)
+	{
+		return $this->attributes['publish_at'] = Carbon::createFromFormat('Y-m-d',$date);
+	}
+
+
+	//控制时间查询方法
+	public function scopePublished($query)
+	{
+		return $query->where('publish_at','<=',Carbon::now());
+	}
+
+	//对象转换成数组方法
+	// function object2array($object) {
+	//   if (is_object($object)) {
+	//     foreach ($object as $key => $value) {
+	//       $array[$key] = $value;
+	//     }
+	//   }
+	//   else {
+	//     $array = $object;
+	//   }
+	//   return $array;
+	// }
 
 
 }
