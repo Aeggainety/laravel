@@ -48,7 +48,6 @@ class ArticleController extends Controller
 		// $articles = $article->orderBy('id','ASC')->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
 		// $articles = $article->latest()->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
 		$articles = $article->where('publish_at','<=',Carbon::now())->latest()->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
-		// $articles = $article->latest()->published()->get();//查询出来的是json数据  中文会显示乱码  循环时$v->字段名
 		// $articles = $article->all()->toArray();
 		$article->where('id','=','2')->update(['content'=>'文章']);
 		$article->title = '二';
